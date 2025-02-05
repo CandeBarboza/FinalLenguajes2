@@ -1,0 +1,4 @@
+RewriteEngine On
+ErrorDocument 404 /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ 404.php [QSA,L]

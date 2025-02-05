@@ -1,0 +1,26 @@
+:root{
+  background-color: #1e1e1e;
+}
+
+.card-template{
+  background-color: #27292a;
+  border-radius: 23px;
+  padding: 30px;
+  border: 1px solid #353637;
+}
+
+.btn-pink{
+  background-color: #E75E8D;
+  border-radius: 25px;
+  padding: 8px 20px;
+  border: none;
+  color: #fff;
+  font-weight: 400;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.alert {
+  margin-bottom: 0px !important;
+}
