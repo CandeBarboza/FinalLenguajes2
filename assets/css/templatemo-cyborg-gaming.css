@@ -202,7 +202,7 @@ p {
   background-color: #fff;
   color: #a07045;
 }
-
+/*
 .main-border-button a {
   font-size: 14px;
   color: #a07045;
@@ -217,7 +217,7 @@ p {
   transition: all .3s;
   position: relative;
   overflow: hidden;
-}
+}*/
 
 .main-border-button a:hover {
   border-color: #fff;
