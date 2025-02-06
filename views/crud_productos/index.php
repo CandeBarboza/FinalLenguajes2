@@ -1,10 +1,16 @@
 <?php
-// Manejo de sesión
-session_start();
-if (!isset($_SESSION['email'])) {
-    header('Location: index.html');
-    exit;
+
+session_start(); //inicia o reanuda una sesión en PHP. Permite acceder a las variables de sesión.
+
+//verifica si la variable de sesión 'email' no está definida.
+if (!isset($_SESSION['email'])) {  
+    //si no existe, significa que el usuario no ha iniciado sesión, por lo que es redirigido a la página de inicio de sesión.
+    header('Location: index.html');  
+    
+    //termina la ejecución del script para asegurarse de que no se ejecuten más instrucciones.
+    exit;  
 }
+
 
 include('Productos.php');
 
