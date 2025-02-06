@@ -55,9 +55,11 @@ require_once dirname(__FILE__) . '/config.php';
                 <<div class="header-text text-center">
                 <h4><em>Disfruta</em> de los mejores vinos</h4>
                 <h6>Bienvenido a Raíces de Cuyo</h6>
-                <div class="main-button">
-                <a href="<?= BASE_URL ?>views/login_register/index.php">Iniciar sesión</a>
-                </div>
+                <?php /*
+                    <div class="main-button">
+                        <a href="<?= BASE_URL ?>views/login_register/index.php">Iniciar sesión</a>
+                    </div>
+                */ ?>
 </div>
           <!-- ***** Most Popular Start ***** -->
           <div class="most-popular" id="most-popular">
