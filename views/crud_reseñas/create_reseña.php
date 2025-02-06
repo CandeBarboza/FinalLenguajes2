@@ -8,8 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //se obtienen y limpian los datos enviados por el formulario
     //trim() elimina espacios en blanco al inicio y al final del texto
     //filter_var() con FILTER_SANITIZE_STRING elimina caracteres peligrosos que puedan ser usados en ataques XSS
-    $nombre = filter_var(trim($_POST['nombre']), FILTER_SANITIZE_STRING);
-    $mensaje = filter_var(trim($_POST['mensaje']), FILTER_SANITIZE_STRING);
+    $nombre = trim($_POST['nombre'] ?? '');
+    $mensaje = trim($_POST['mensaje'] ?? '');
     $fecha = trim($_POST['fecha']); //no se usa filtro acá porque después se valida con strtotime()
 
     //validación: se verifica que ningún campo esté vacío

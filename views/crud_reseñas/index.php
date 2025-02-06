@@ -1,13 +1,13 @@
 <?php
 
-session_start(); // Inicia o reanuda una sesión en PHP. Permite acceder a las variables de sesión.
+session_start(); //inicia o reanuda una sesión en PHP. Permite acceder a las variables de sesión.
 
-// Verifica si la variable de sesión 'email' no está definida.
+//verifica si la variable de sesión 'email' no está definida.
 if (!isset($_SESSION['email'])) {  
-    // Si no existe, significa que el usuario no ha iniciado sesión, por lo que es redirigido a la página de inicio de sesión.
+    //si no existe, significa que el usuario no ha iniciado sesión, por lo que es redirigido a la página de inicio de sesión.
     header('Location: index.html');  
     
-    // Termina la ejecución del script para asegurarse de que no se ejecuten más instrucciones.
+    //termina la ejecución del script para asegurarse de que no se ejecuten más instrucciones.
     exit;  
 }
 
