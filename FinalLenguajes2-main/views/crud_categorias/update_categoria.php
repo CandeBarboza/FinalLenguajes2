@@ -1,12 +1,12 @@
 <?php
 include('Categorias.php');
 
-// Obtener el ID de la categoría desde la URL
+//obtener el ID de la categoría desde la URL
 $id = $_GET['id'] ?? null;
 
-// Crear instancia de la clase Categorias
+//crear instancia de la clase Categorias
 $categorias = new Categorias();
-$row = $categorias->obtenerCategoriasPorId($id); // Obtener los datos de la categoría a editar
+$row = $categorias->obtenerCategoriasPorId($id); //obtener los datos de la categoría a editar
 ?>
 
 <!DOCTYPE html>
