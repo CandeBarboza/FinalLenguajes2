@@ -1,0 +1,65 @@
+/* Estilos generales */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #1a1a1a; /* Fondo oscuro */
+  color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+a {
+  text-decoration: none;
+  font-size: 26px;
+  color: #ff6b6b;
+}
+/* Contenedor principal */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Contenido del error */
+.error-content {
+  max-width: 600px;
+}
+
+h1 {
+  font-size: 10rem;
+  margin: 0;
+  color: #ff6b6b; /* Rojo suave */
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 2rem;
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  color: #cccccc;
+}
+
+/* Botón de regreso */
+.button {
+  text-decoration: none;
+  background-color: #ff6b6b;
+  color: #ffffff;
+  padding: 15px 30px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  font-size: 1rem;
+}
+
+.button:hover {
+  background-color: #ff3b3b; /* Color más oscuro al pasar el mouse */
+}
