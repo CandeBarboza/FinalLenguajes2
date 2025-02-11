@@ -1,2 +1,2 @@
 <?php
-define('BASE_URL', 'http://localhost/lenguaje2Final-main/');
+define('BASE_URL', 'http://localhost/FinalLenguajes2-main/');
