@@ -1,5 +1,4 @@
 <?php
-// Importa la clase Database para la conexión a la base de datos
 require_once dirname(__FILE__) . '/../../Database.php';
 
 class Productos
@@ -13,6 +12,8 @@ class Productos
         $this->con = $this->db->getConnection();
     }
 
+
+
     // Método privado que devuelve una imagen por defecto si no hay una imagen proporcionada
     private function obtenerImagenPorDefecto($imagen_url)
     {
@@ -21,7 +22,10 @@ class Productos
             : $imagen_url;
     }
 
-    public function obtenerTodosLosProductos()
+
+
+
+    /*public function obtenerTodosLosProductos()
     {
         try {
             $sql = "SELECT p.id_producto, p.nombre, p.precio, p.stock, p.imagen_url, c.nombre AS categoria
@@ -43,9 +47,31 @@ class Productos
             echo "Error: " . $e->getMessage();
             return [];
         }
+    }*/
+
+
+
+    public function obtenerTodosLosProductos()
+    {
+        $sql = "SELECT * FROM Productos"; //consulta SQL para seleccionar todos los productos.
+        $result = $this->con->query($sql); //ejecuta la consulta en la base de datos.
+        $productos = []; //inicializa un arreglo vacío para almacenar los productos.
+
+        if ($result) { //verifica si la consulta tuvo éxito.
+            while ($row = $result->fetch_assoc()) { //itera sobre cada fila de resultados.
+                $productos[] = $row; //agrega la fila actual al arreglo `$productos`.
+            }
+        } else {
+            error_log("Error al obtener los productos: " . $this->con->error); //registra un error en caso de fallo.
+        }
+
+        return $productos; //devuelve el arreglo de productos.
     }
 
-    public function crearProducto($nombre, $precio, $stock, $imagen_url, $id_categoria)
+
+
+
+    /*public function crearProducto($nombre, $precio, $stock, $imagen_url, $id_categoria)
     {
         if (empty($nombre) || empty($imagen_url)) {
             return ['success' => false, 'message' => 'El nombre y la imagen son campos obligatorios.'];
@@ -76,7 +102,33 @@ class Productos
         } catch (Exception $e) {
             return ['success' => false, 'message' => 'Error al crear el producto: ' . $e->getMessage()];
         }
+    }*/
+
+
+
+    public function crearProducto($nombre, $precio, $stock, $imagen_url, $id_categoria)
+    {
+    $sql = "INSERT INTO Productos (nombre, precio, stock, imagen_url, id_categoria) VALUES (?, ?, ?, ?, ?)"; //consulta SQL para insertar un producto.
+        $stmt = $this->con->prepare($sql); //prepara la consulta SQL.
+
+        if ($stmt === false) { //verifica si la preparación de la consulta falló.
+            error_log("Error al preparar la consulta: " . $this->con->error); //registra el error.
+            return false; //devuelve `false` en caso de error.
+        }
+
+        $stmt->bind_param("sssss", $nombre, $precio, $stock, $imagen_url, $id_categoria); //asigna los valores de los parámetros a la consulta.
+        $result = $stmt->execute(); //ejecuta la consulta.
+        $stmt->close(); //cierra la declaración preparada.
+
+        if (!$result) { // Verifica si la ejecución de la consulta falló.
+            error_log("Error al ejecutar la consulta: " . $stmt->error); // Registra el error.
+        }
+
+        return $result; // Devuelve `true` si la consulta tuvo éxito, de lo contrario `false`.
     }
+
+
+
 
     public function actualizarProducto($id, $nombre, $precio, $stock, $imagen_url, $id_categoria)
     {
