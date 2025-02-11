@@ -1,23 +1,23 @@
 <?php
-require_once dirname(__FILE__) . '/../../Database.php'; // Importa la clase `Database` para gestionar la conexión a la base de datos.
+require_once dirname(__FILE__) . '/../../Database.php'; //importa la clase `Database` para gestionar la conexión a la base de datos.
 
-class Categorias // Define la clase `Categorias`.
+class Categorias //define la clase `Categorias`.
 {
-    private $db; // Variable privada para la instancia de la clase `Database`.
-    private $con; // Variable privada para la conexión a la base de datos.
+    private $db; //variable privada para la instancia de la clase `Database`.
+    private $con; //variable privada para la conexión a la base de datos.
 
-    public function __construct() // Constructor de la clase.
+    public function __construct() //constructor de la clase.
     {
-        $this->db = new Database(); // Crea una instancia de la clase `Database`.
-        $this->con = $this->db->getConnection(); // Obtiene la conexión a la base de datos desde la instancia.
+        $this->db = new Database(); //crea una instancia de la clase `Database`.
+        $this->con = $this->db->getConnection(); //obtiene la conexión a la base de datos desde la instancia.
     }
 
-    // Método para obtener todas las categorías.
+    //método para obtener todas las categorías.
     public function obtenerTodasLasCategorias()
     {
-        $sql = "SELECT * FROM Categorias"; // Consulta SQL para seleccionar todas las categorías.
-        $result = $this->con->query($sql); // Ejecuta la consulta en la base de datos.
-        $categorias = []; // Inicializa un arreglo vacío para almacenar las categorías.
+        $sql = "SELECT * FROM Categorias"; //consulta SQL para seleccionar todas las categorías.
+        $result = $this->con->query($sql); //ejecuta la consulta en la base de datos.
+        $categorias = []; //inicializa un arreglo vacío para almacenar las categorías.
 
         if ($result) { // Verifica si la consulta tuvo éxito.
             while ($row = $result->fetch_assoc()) { // Itera sobre cada fila de resultados.
