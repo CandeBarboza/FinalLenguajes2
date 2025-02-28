@@ -5,12 +5,18 @@ if (!isset($_SESSION['email'])) { // Verifica si no hay una sesión activa con l
     exit; // Detiene la ejecución del script.
 }
 
+
+
+
 include('Categorias.php'); // Incluye el archivo clase Categorias.
 
 // Obtener todas las categorías
 $categorias = new Categorias(); // Crea una instancia de la clase Categorias.
 $categorias = $categorias->obtenerTodasLasCategorias(); // Llama al método para obtener todas las categorías de la base de datos.
 ?>
+
+
+
 
 <!DOCTYPE html> 
 <html lang="en"> 
@@ -31,6 +37,9 @@ $categorias = $categorias->obtenerTodasLasCategorias(); // Llama al método para
 </head>
 <body>
     <?php include('../../components/header.php'); ?> <!-- Incluye el encabezado de la página desde un archivo externo. -->
+
+
+
 
     <div class="page-content mt-0"> <!-- Contenedor principal para el contenido de la página. -->
         <div class="container"> <!-- Contenedor Bootstrap para centrar y dar formato al contenido. -->
