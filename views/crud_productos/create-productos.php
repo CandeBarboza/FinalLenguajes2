@@ -1,5 +1,41 @@
 <?php
-require_once 'Productos.php';
+include('Productos.php');
+
+// Verificando si los datos del formulario fueron recibidos
+if (isset($_POST['nombre'], $_POST['precio'], $_POST['stock'], $_POST['imagen'], $_POST['categoria'])) {
+    // Recibiendo los datos del formulario de manera segura
+    $nombre = trim($_POST['nombre']);
+    $precio = filter_var($_POST['precio'], FILTER_VALIDATE_FLOAT);
+    $stock = filter_var($_POST['stock'], FILTER_VALIDATE_INT);
+    $imagen = filter_var($_POST['imagen'], FILTER_VALIDATE_URL);
+    $id_categoria = filter_var($_POST['categoria'], FILTER_VALIDATE_INT);
+
+    // Verificando si los campos no están vacíos o inválidos
+    if (empty($nombre) || $precio === false || $stock === false || $imagen === false || $id_categoria === false) {
+        echo "Todos los campos son obligatorios y deben ser válidos.";
+        exit;
+    }
+
+    // Creando una instancia de la clase Productos
+    $productos = new Productos();
+
+    // Llamando a la función crearProducto y verificando si la operación fue exitosa
+    $resultado = $productos->crearProducto($nombre, $precio, $stock, $imagen, $id_categoria);
+
+    if ($resultado['success']) {
+        // Redirigiendo a la página principal si se guardó correctamente
+        header("Location: index.php");
+        exit;
+    } else {
+        // Mostrando un mensaje de error en caso de que falle la operación
+        echo $resultado['message'];
+    }
+} else {
+    echo "No se recibieron los datos del formulario correctamente.";
+}
+
+
+/*require_once 'Productos.php';
 
 //verifica que el formulario haya sido enviado correctamente mediante el método POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -46,11 +82,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //si el acceso al script no es mediante POST, redirige con un mensaje de error
     header("Location: index.php?error=" . urlencode("Acceso no válido."));
     exit;
-}
+}*/
 
 
 /*
 include('Productos.php');
+
 
 // Verifica que el formulario haya sido enviado correctamente
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
