@@ -1,6 +1,39 @@
 <?php
 include('Categorias.php');
 
+try {
+    // Verificar si los datos fueron enviados
+    if (!isset($_POST['nombre']) || !isset($_POST['descripcion'])) {
+        throw new Exception("No se recibieron los datos del formulario correctamente.");
+    }
+
+    // Sanitizar y validar las entradas del formulario
+    $nombre = trim(filter_var($_POST['nombre'], FILTER_SANITIZE_STRING));
+    $descripcion = trim(filter_var($_POST['descripcion'], FILTER_SANITIZE_STRING));
+
+    // Verificar que los campos no estén vacíos
+    if (empty($nombre) || empty($descripcion)) { 
+        throw new Exception("Los campos Nombre y Descripción son obligatorios.");
+    }
+
+    // Crear una nueva instancia de Categorias y agregar la categoría
+    $categorias = new Categorias();
+
+    if (!$categorias->crearCategorias($nombre, $descripcion)) {
+        throw new Exception("Error al crear la categoría.");
+    }
+
+    // Redirigir si se creó con éxito
+    header("Location: index.php");
+    exit;
+
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+/*
+include('Categorias.php');
+
 // Verificando si los datos del formulario fueron recibidos
 if (isset($_POST['nombre']) && isset($_POST['descripcion'])) {
     // Recibiendo los datos del formulario de manera segura
@@ -28,4 +61,6 @@ if (isset($_POST['nombre']) && isset($_POST['descripcion'])) {
 } else {
     echo "No se recibieron los datos del formulario correctamente.";
 }
+*/
+
 ?>
