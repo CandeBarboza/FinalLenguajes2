@@ -6,16 +6,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obtener el ID del proveedor desde el formulario, asegurando que sea un número entero
     $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
     // Obtener y limpiar el nombre del proveedor, eliminando espacios en blanco al inicio y al final
-    $nombre_proveedores = isset($_POST['nombre_proveedores']) ? trim($_POST['nombre_proveedores']) : '';
+    $nombre = isset($_POST['nombre']) ? trim($_POST['nombre']) : '';
     // Obtener y limpiar la razón social, eliminando espacios en blanco al inicio y al final
-    $razon_social = isset($_POST['razon_social']) ? trim($_POST['razon_social']) : '';
+    $descripcion = isset($_POST['descripcion']) ? trim($_POST['descripcion']) : '';
 
     // Validar los campos obligatorios no esten vacios y el id sea mayor a 0
-    if ($id > 0 && !empty($nombre_proveedores) && !empty($razon_social)) {
+    if ($id > 0 && !empty($nombre) && !empty($descripcion)) {
         try {
             $proveedores = new Proveedores();
             // Intentar actualizar el proveedor en la base de datos
-            if ($proveedores->actualizarProveedor($id, $nombre_proveedores, $razon_social)) {
+            if ($proveedores->actualizarProveedor($id, $nombre, $descripcion)) {
                 // Redirigir a la página principal con un mensaje de éxito
                 header("Location: index.php?message=Proveedor actualizado correctamente");
                 exit;
@@ -81,10 +81,10 @@ if (!$row) {
                     <form action="" method="POST" class="form-row">
                         <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
                         <div class="form-group col-md-5">
-                            <input type="text" name="nombre_proveedores" placeholder="Nombre Proveedores" class="form-control" value="<?php echo htmlspecialchars($row['nombre_proveedores']); ?>" required>
+                            <input type="text" name="nombre" placeholder="Nombre Proveedores" class="form-control" value="<?php echo htmlspecialchars($row['nombre']); ?>" required>
                         </div>
                         <div class="form-group col-md-5">
-                            <input type="text" name="razon_social" placeholder="Razón Social" class="form-control" value="<?php echo htmlspecialchars($row['razon_social']); ?>" required>
+                            <input type="text" name="descripcion" placeholder="Razón Social" class="form-control" value="<?php echo htmlspecialchars($row['descripcion']); ?>" required>
                         </div>
                         <div class="form-group col-md-4">
                             <button type="submit" class="btn-pink">Modificar Proveedores</button>
