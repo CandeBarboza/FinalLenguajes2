@@ -1,9 +1,43 @@
 <?php
 include('Reseña.php');
 
-$id = $_GET['id']; // Obtiene el valor del parámetro 'id' de la URL, usando el método GET.
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
+    $nombre = isset($_POST['nombre']) ? trim($_POST['nombre']) : '';
+    $mensaje = isset($_POST['mensaje']) ? trim($_POST['mensaje']) : '';
+    $fecha = isset($_POST['fecha']) ? trim($_POST['fecha']) : '';
+
+    // Validar los campos obligatorios no esten vacios y el id sea mayor a 0
+    if ($id > 0 && !empty($nombre) && !empty($mensaje) && !empty($fecha)) {
+        try {
+            $reseña = new Reseña();
+            // Intentar actualizar la reseña en la base de datos
+            if ($reseña->actualizarReseña($id, $nombre, $mensaje, $fecha)) {
+                // Redirigir a la página principal con un mensaje de éxito
+                header("Location: index.php?message=Reseña actualizada correctamente");
+                exit;
+            } else {
+                throw new Exception("Error al actualizar ña reseña.");
+            }
+        } catch (Exception $e) {
+            $error = "Error: " . $e->getMessage();
+        }
+    } else {
+        $error = "Por favor, complete todos los campos.";
+    }
+}
+
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+if ($id <= 0) {
+    die("ID no válido.");
+}
+
 $reseña = new Reseña();
 $row = $reseña->obtenerReseñaPorId($id);
+
+if (!$row) {
+    die("Reseña no encontrado.");
+}
 ?>
 
 <!DOCTYPE html>
@@ -33,6 +67,11 @@ $row = $reseña->obtenerReseñaPorId($id);
                     <h1>Editar Reseña</h1>
                 </div>
                 <div class="card-body">
+                <?php if (isset($error)): ?>
+                        <div class="alert alert-danger">
+                            <?php echo htmlspecialchars($error); ?>
+                        </div>
+                    <?php endif; ?>
                     <form action="edit_reseña.php" method="POST" class="form-row">
                         <input type="hidden" name="id" value="<?php echo $row['id_reseña'] ?>">
                         <div class="form-group col-md-5">
