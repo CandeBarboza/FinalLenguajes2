@@ -37,15 +37,15 @@ $proveedores = $proveedores->obtenerTodosLosProveedores();
         <div class="container">
             <div class="card-template mb-4">
                 <div class="header-card">
-                    <h1>Crear Proveedores</h1>
+                    <h1>Crear Proveedor</h1>
                 </div>
                 <div class="card-body">
                     <form action="create_proveedores.php" method="POST" class="form-row">
                         <div class="form-group col-md-5">
-                            <input type="text" name="nombre_proveedores" placeholder="Nombre Proveedores" class="form-control" required>
+                            <input type="text" name="nombre" placeholder="Nombre" class="form-control" required>
                         </div>
                         <div class="form-group col-md-5">
-                            <input type="text" name="razon_social" placeholder="razon_social" class="form-control" required>
+                            <input type="text" name="descripcion" placeholder="Descripción" class="form-control" required>
                         </div>
                         <div class="form-group col-md-4">
                             <button type="submit" class="btn-pink">Agregar Proveedores</button>
@@ -60,8 +60,8 @@ $proveedores = $proveedores->obtenerTodosLosProveedores();
                     <thead class="thead-dark">
                         <tr>
                             <th>ID Proveedores</th>
-                            <th>Nombre Proveedores</th>
-                            <th>razon_social</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
                             <th colspan="2">Acciones</th>
                         </tr>
                     </thead>
@@ -69,8 +69,8 @@ $proveedores = $proveedores->obtenerTodosLosProveedores();
                         <?php foreach ($proveedores as $row): ?>
                             <tr>
                                 <td class="text-white"><?= $row['id'] ?></td>
-                                <td class="text-white"><?= $row['nombre_proveedores'] ?></td>
-                                <td class="text-white"><?= $row['razon_social'] ?></td>
+                                <td class="text-white"><?= $row['nombre'] ?></td>
+                                <td class="text-white"><?= $row['descripcion'] ?></td>
                                 <td><a href="update_proveedores.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm">Editar</a></td>
                                 <td><a href="delete_proveedores.php?id=<?= $row['id'] ?>" class="btn btn-danger btn-sm">Eliminar</a></td>
 

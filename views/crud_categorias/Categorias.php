@@ -16,18 +16,13 @@ class Categorias // Define la clase `Categorias`.
     public function obtenerTodasLasCategorias()
     {
         $sql = "SELECT * FROM Categorias"; // Consulta SQL para seleccionar todas las categorías.
-        $result = $this->con->query($sql); // Ejecuta la consulta en la base de datos.
-        $categorias = []; // Inicializa un arreglo vacío para almacenar las categorías.
+        $result = $this->con->query($sql);
 
-        if ($result) { // Verifica si la consulta tuvo éxito.
-            while ($row = $result->fetch_assoc()) { // Itera sobre cada fila de resultados.
-                $categorias[] = $row; // Agrega la fila actual al arreglo `$categorias`.
-            }
-        } else {
-            error_log("Error al obtener las categorías: " . $this->con->error); // Registra un error en caso de fallo.
+        if (!$result) { // Verifica si hubo un error en la consulta.
+            throw new Exception("Error en la consulta: " . $this->con->error); // Lanza una excepción con el mensaje de error.
         }
 
-        return $categorias; // Devuelve el arreglo de categorías.
+        return $result->fetch_all(MYSQLI_ASSOC); // Retorna los resultados como un array asociativo.
     }
 
     // Método para crear una nueva categoría.
@@ -36,20 +31,19 @@ class Categorias // Define la clase `Categorias`.
         $sql = "INSERT INTO Categorias (nombre, descripcion) VALUES (?, ?)"; // Consulta SQL para insertar una categoría.
         $stmt = $this->con->prepare($sql); // Prepara la consulta SQL.
 
-        if ($stmt === false) { // Verifica si la preparación de la consulta falló.
-            error_log("Error al preparar la consulta: " . $this->con->error); // Registra el error.
-            return false; // Devuelve `false` en caso de error.
+        if (!$stmt) {
+            throw new Exception("Error en la preparación de la consulta: " . $this->con->error);
         }
 
-        $stmt->bind_param("ss", $nombre, $descripcion); // Asigna los valores de los parámetros a la consulta.
-        $result = $stmt->execute(); // Ejecuta la consulta.
-        $stmt->close(); // Cierra la declaración preparada.
+        $stmt->bind_param("ss", $nombre, $descripcion);   // Asigna los valores a los parámetros de la consulta.
+        $resultado = $stmt->execute();
+        $stmt->close();
 
-        if (!$result) { // Verifica si la ejecución de la consulta falló.
-            error_log("Error al ejecutar la consulta: " . $stmt->error); // Registra el error.
+        if (!$resultado) {
+            throw new Exception("Error al insertar el proveedor: " . $this->con->error);
         }
 
-        return $result; // Devuelve `true` si la consulta tuvo éxito, de lo contrario `false`.
+        return $resultado; // Retorna `true` si la inserción fue exitosa.
     }
 
     // Método para obtener una categoría por su ID.
@@ -58,21 +52,20 @@ class Categorias // Define la clase `Categorias`.
         $sql = "SELECT * FROM Categorias WHERE id_categoria = ?"; // Consulta SQL para seleccionar una categoría específica.
         $stmt = $this->con->prepare($sql); // Prepara la consulta.
 
-        if ($stmt === false) { // Verifica si la preparación falló.
-            error_log("Error al preparar la consulta: " . $this->con->error); // Registra el error.
-            return null; // Devuelve `null` en caso de error.
+        if (!$stmt) {
+            throw new Exception("Error en la preparación de la consulta: " . $this->con->error);
         }
 
-        $stmt->bind_param("i", $id); // Asigna el valor del ID como parámetro.
-        $stmt->execute(); // Ejecuta la consulta.
-        $result = $stmt->get_result(); // Obtiene los resultados de la consulta.
-        $stmt->close(); // Cierra la declaración preparada.
+        $stmt->bind_param("i", $id); // Asigna el valor del ID al parámetro de la consulta.
+        $stmt->execute();
+        $result = $stmt->get_result(); // Obtiene los resultados.
+        $stmt->close();
 
-        if ($result && $result->num_rows > 0) { // Verifica si hay resultados.
-            return $result->fetch_assoc(); // Devuelve la fila asociada.
+        if (!$result) {
+            throw new Exception("Error al obtener el proveedor: " . $this->con->error);
         }
 
-        return null; // Devuelve `null` si no se encuentra la categoría.
+        return $result->fetch_assoc();
     }
 
     // Método para actualizar una categoría.
@@ -81,20 +74,19 @@ class Categorias // Define la clase `Categorias`.
         $sql = "UPDATE Categorias SET nombre = ?, descripcion = ? WHERE id_categoria = ?"; // Consulta SQL para actualizar una categoría.
         $stmt = $this->con->prepare($sql); // Prepara la consulta.
 
-        if ($stmt === false) { // Verifica si la preparación falló.
-            error_log("Error al preparar la consulta: " . $this->con->error); // Registra el error.
-            return false; // Devuelve `false` en caso de error.
+        if (!$stmt) {
+            throw new Exception("Error en la preparación de la consulta: " . $this->con->error);
         }
 
-        $stmt->bind_param("ssi", $nombre, $descripcion, $id); // Asigna los valores a los parámetros.
-        $result = $stmt->execute(); // Ejecuta la consulta.
-        $stmt->close(); // Cierra la declaración preparada.
+        $stmt->bind_param("ssi", $nombre, $descripcion, $id);
+        $resultado = $stmt->execute();
+        $stmt->close();
 
-        if (!$result) { // Verifica si la ejecución falló.
-            error_log("Error al ejecutar la consulta: " . $stmt->error); // Registra el error.
+        if (!$resultado) {
+            throw new Exception("Error al actualizar el proveedor: " . $this->con->error);
         }
 
-        return $result; // Devuelve `true` si tuvo éxito, de lo contrario `false`.
+        return $resultado;
     }
 
     // Método para eliminar una categoría.
@@ -103,26 +95,26 @@ class Categorias // Define la clase `Categorias`.
         $sql = "DELETE FROM Categorias WHERE id_categoria = ?"; // Consulta SQL para eliminar una categoría.
         $stmt = $this->con->prepare($sql); // Prepara la consulta.
 
-        if ($stmt === false) { // Verifica si la preparación falló.
-            error_log("Error al preparar la consulta: " . $this->con->error); // Registra el error.
-            return false; // Devuelve `false` en caso de error.
+        if (!$stmt) {  // Verifica si hubo un error en la preparación de la consulta.
+            throw new Exception("Error en la preparación de la consulta: " . $this->con->error);
         }
 
-        $stmt->bind_param("i", $id); // Asigna el valor del ID como parámetro.
-        $result = $stmt->execute(); // Ejecuta la consulta.
-        $stmt->close(); // Cierra la declaración preparada.
+        $stmt->bind_param("i", $id);
+        $resultado = $stmt->execute();
+        $stmt->close();
 
-        if (!$result) { // Verifica si la ejecución falló.
-            error_log("Error al ejecutar la consulta: " . $stmt->error); // Registra el error.
+        if (!$resultado) {
+            throw new Exception("Error al eliminar el proveedor: " . $this->con->error);
         }
 
-        return $result; // Devuelve `true` si tuvo éxito, de lo contrario `false`.
+        return $resultado;
     }
 
-    // Método para cerrar la conexión a la base de datos.
+    /* Método para cerrar la conexión a la base de datos.
     public function cerrarConexion()
     {
         $this->con->close(); // Cierra la conexión con la base de datos.
     }
+        */
 }
 ?>

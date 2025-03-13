@@ -15,7 +15,7 @@ include('Reseña.php');
 
 // Crear una instancia de la clase Reseña
 $reseña = new Reseña();
-$todasLasReseñas = $reseña->obtenerTodosLasReseña();  // Obtener todas las reseñas
+$reseña = $reseña->obtenerTodasLasReseñas();  // Obtener todas las reseñas
 
 ?>
 
@@ -39,21 +39,6 @@ $todasLasReseñas = $reseña->obtenerTodosLasReseña();  // Obtener todas las re
 </head>
 
 <body>
-
-    <?php if (isset($_GET['success'])): ?>
-        <div class="alert alert-success">Reseña eliminada correctamente.</div>
-    <?php endif; ?>
-
-    <?php if (isset($_GET['error']) && $_GET['error'] == '1'): ?>
-        <div class="alert alert-danger">Hubo un error al intentar eliminar una reseña. Inténtalo nuevamente.</div>
-    <?php endif; ?>
-
-    <?php if (isset($_GET['error']) && $_GET['error'] == 'foreign_key'): ?>
-        <div class="alert alert-warning">
-            No se puede eliminar esta reseña.
-        </div>
-    <?php endif; ?>
-
     <?php include('../../components/header.php'); ?>
 
     <div class="page-content mt-0">
@@ -92,7 +77,7 @@ $todasLasReseñas = $reseña->obtenerTodosLasReseña();  // Obtener todas las re
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($todasLasReseñas as $row): ?>
+                        <?php foreach ($reseña as $row): ?>
                             <tr>
                                 <td class="text-white"><?= $row['id_reseña'] ?></td>
                                 <td class="text-white"><?= $row['nombre'] ?></td>

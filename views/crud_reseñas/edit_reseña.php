@@ -1,19 +1,27 @@
 <?php
 include('Reseña.php');
 
-// Asegurarnos de que todas las variables sean correctas
-$id = $_POST['id'];
-$nombre = $_POST['nombre'];
-$mensaje = $_POST['mensaje']; 
-$fecha = $_POST['fecha'];  
+if (isset($_POST['id'], $_POST['nombre'], $_POST['mensaje'], $_POST['fecha'])) {
+    $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
+    $nombre = trim($_POST['nombre']);
+    $mensaje = trim($_POST['mensaje']);
+    $fecha = trim($_POST['fecha']);
 
-// Crear una instancia de la clase Reseña
-$reseña = new Reseña();
+    if (!$id || empty($nombre) || empty($mensaje)|| empty($fecha)) {
+        echo "Datos inválidos.";
+        exit;
+    }
 
-// Intentar actualizar la reseña con los datos obtenidos
-if ($reseña->actualizarReseña($id, $nombre, $mensaje, $fecha)) {
-    header("Location: index.php");  // Redirigir en caso de éxito
+    $reseña = new Reseña();
+    if ($reseña->actualizarReseña($id, $nombre, $mensaje, $fecha)) {
+        header("Location: index.php?mensaje=" . urlencode("Reseña actualizada correctamente."));
+        exit;
+    } else {
+        echo "Error al actualizar la reseña.";
+    }
 } else {
-    echo "Error al actualizar la reseña";  // Mostrar mensaje de error si la actualización falla
+    echo "Datos incompletos.";
 }
+
+//LISTO
 ?>

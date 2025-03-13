@@ -2,11 +2,11 @@
 include('Proveedores.php');
 
 // Sanitizar y validar las entradas del formulario
-$nombre_proveedores = filter_var($_POST['nombre_proveedores'], FILTER_SANITIZE_STRING); // Limpia la entrada eliminando caracteres especiales
-$razon_social = filter_var($_POST['razon_social'], FILTER_SANITIZE_STRING);
+$nombre = filter_var($_POST['nombre'], FILTER_SANITIZE_STRING); // Limpia la entrada eliminando caracteres especiales
+$descripcion = filter_var($_POST['descripcion'], FILTER_SANITIZE_STRING);
 
 // Verificar que los campos no estén vacíos
-if (empty($nombre_proveedores) || empty($razon_social)) {
+if (empty($nombre) || empty($descripcion)) {
     echo "Los campos Nombre del Proveedor y Razón Social son obligatorios.";
     exit;
 }
@@ -14,7 +14,7 @@ if (empty($nombre_proveedores) || empty($razon_social)) {
 try {
     // Crear un nuevo objeto Proveedores y agregar el proveedor
     $proveedores = new Proveedores();
-    if ($proveedores->crearProveedor($nombre_proveedores, $razon_social)) {
+    if ($proveedores->crearProveedor($nombre, $descripcion)) {
         header("Location: index.php"); // Redirige al usuario a la página principal si la creación fue exitosa
         exit;
     } else {

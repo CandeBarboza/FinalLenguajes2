@@ -8,8 +8,8 @@ if (!isset($_SESSION['email'])) { // Verifica si no hay una sesión activa con l
 include('Categorias.php'); // Incluye el archivo clase Categorias.
 
 // Obtener todas las categorías
-$categorias = new Categorias(); // Crea una instancia de la clase Categorias.
-$categorias = $categorias->obtenerTodasLasCategorias(); // Llama al método para obtener todas las categorías de la base de datos.
+$categoriasObj = new Categorias(); // Crea una instancia de la clase Categorias.
+$categorias = $categoriasObj->obtenerTodasLasCategorias(); // Llama al método para obtener todas las categorías de la base de datos.
 ?>
 
 <!DOCTYPE html> 

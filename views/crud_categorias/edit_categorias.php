@@ -1,6 +1,32 @@
 <?php
 include('Categorias.php');
 
+if (isset($_POST['id'], $_POST['nombre'], $_POST['descripcion'])) {
+    $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
+    $nombre = trim($_POST['nombre']);
+    $descripcion = trim($_POST['descripcion']);
+
+    if (!$id || empty($nombre) || empty($descripcion)) {
+        echo "Datos inválidos.";
+        exit;
+    }
+
+    $categorias = new Categorias();
+    if ($categorias->actualizarCategorias($id, $nombre, $descripcion)) {
+        header("Location: index.php?mensaje=" . urlencode("Categoría actualizada correctamente."));
+        exit;
+    } else {
+        echo "Error al actualizar la categoría.";
+    }
+} else {
+    echo "Datos incompletos.";
+}
+
+
+/*
+LISTO
+include('Categorias.php');
+
 // Validar si los datos necesarios están presentes en el POST
 if (isset($_POST['id'], $_POST['nombre'], $_POST['descripcion'])) {
     $id = $_POST['id'];
@@ -41,4 +67,6 @@ if (isset($_POST['id'], $_POST['nombre'], $_POST['descripcion'])) {
 } else {
     echo "Error: Datos incompletos.";
 }
+
+*/
 ?>

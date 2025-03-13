@@ -16,4 +16,5 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 } else {
     echo "Error: ID de categoría inválido o no proporcionado.";
 }
+//LISTO
 ?>

@@ -32,6 +32,7 @@ try {
 }
 
 /*
+LISTO
 include('Categorias.php');
 
 // Verificando si los datos del formulario fueron recibidos

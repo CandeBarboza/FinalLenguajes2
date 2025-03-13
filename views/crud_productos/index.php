@@ -13,15 +13,14 @@ if (!isset($_SESSION['email'])) {
 
 
 include('Productos.php');
+// Instanciamos la clase Productos
+$productos = new Productos();
 
-// Crear una instancia de la clase Productos
-$productosObj = new Productos();
+// Guardamos la lista de productos en una variable diferente
+$listaProductos = $productos->obtenerTodosLosProductos();
 
-// Obtener todos los productos
-$productos = $productosObj->obtenerTodosLosProductos();
-
-// Obtener las categorías desde la base de datos
-$categorias = $productosObj->obtenerCategorias();
+// Obtenemos las categorías 
+$categorias = $productos->obtenerCategorias();
 ?>
 
 <!DOCTYPE html>
@@ -41,14 +40,7 @@ $categorias = $productosObj->obtenerCategorias();
     <link rel="stylesheet" href="../../assets/css/index.css">
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Cambiar el color del texto dentro de las celdas de la tabla */
-        .table tbody td {
-            color: white; /* Cambiar color a blanco */
-        }
-    </style>
 </head>
-
 <body>
     <?php include('../../components/header.php'); ?>
 
@@ -70,11 +62,20 @@ $categorias = $productosObj->obtenerCategorias();
                         <div class="form-group col-md-6">
                             <input type="number" name="stock" placeholder="Stock" class="form-control" required>
                         </div>
+                        <div class="form-group col-md-12">
+                         <label for="tipo_envase">Selecciona un tipo de envase</label>
+                         <select id="tipo_envase" name="tipo_envase" class="form-control" required>
+                            <option value="" disabled selected>Selecciona un tipo de envase</option>
+                            <option value="pequeño">Pequeño</option>
+                            <option value="mediano">Mediano</option>  
+                            <option value="grande">Grande</option>
+                        </select>
+                        </div>
                         <div class="form-group col-md-6">
-                            <input type="url" name="imagen" placeholder="URL Imagen" class="form-control" required>
+                            <input type="url" name="imagen_url" placeholder="URL Imagen" class="form-control" required>
                         </div>
                         <div class="form-group col-md-12">
-                            <select name="categoria" class="form-control" required>
+                            <select name="id_categoria" class="form-control" required>
                                 <option value="">Selecciona una categoría</option>
                                 <?php foreach ($categorias as $categoria): ?>
                                     <option value="<?= htmlspecialchars($categoria['id_categoria']) ?>">
@@ -99,6 +100,7 @@ $categorias = $productosObj->obtenerCategorias();
                         <th>Nombre</th>
                         <th>Precio</th>
                         <th>Stock</th>
+                        <th>Tipo de Envase</th>
                         <th>Imagen</th>
                         <th>Categoría</th>
                         <th colspan="2">Acciones</th>
@@ -106,61 +108,30 @@ $categorias = $productosObj->obtenerCategorias();
                 </thead>
                 <tbody>
 
-                <?php foreach ($productos as $producto): ?> 
-    <!-- Bucle foreach que recorre el array $productos, asignando cada elemento a la variable $producto -->
+                <?php foreach ($listaProductos as $row): ?>
+                            <tr>
+                                <td class="text-white"><?= $row['id_producto'] ?></td>
+                                <td class="text-white"><?= $row['nombre'] ?></td>
+                                <td class="text-white"><?= $row['precio'] ?></td>
+                                <td class="text-white"><?= $row['stock'] ?></td>
+                                <td class="text-white"><?= $row['tipo_envase'] ?></td>
+                                <td class="text-white">
+                                    <?php if (!empty($row['imagen_url'])): ?>
+                                        <img src="<?= htmlspecialchars($row['imagen_url']) ?>" alt="Imagen" width="80" height="100" 
+                                        style="object-fit: contain; vertical-align: middle;">
+                                    <?php else: ?>
+                                        Sin imagen
+                                    <?php endif; ?>
+                                </td>
+                                <td><a href="update.php?id=<?= $row['id_producto'] ?>" class="btn btn-warning btn-sm">Editar</a></td>
+                                <td><a href="delete_productos.php?id=<?= $row['id_producto'] ?>" class="btn btn-danger btn-sm">Eliminar</a></td>
 
-                <tr>
-                    <td><?= htmlspecialchars($producto['id_producto']) ?></td> 
-                     <!-- Muestra el ID del producto y usa htmlspecialchars() para evitar ataques XSS -->
-
-                     <td><?= htmlspecialchars($producto['nombre']) ?></td> 
-                     <!-- Muestra el nombre del producto, aplicando htmlspecialchars() por seguridad -->
-
-                     <td><?= htmlspecialchars($producto['precio']) ?></td> 
-                     <!-- Muestra el precio del producto, también protegido con htmlspecialchars() -->
-
-                    <td><?= htmlspecialchars($producto['stock']) ?></td> 
-                     <!-- Muestra la cantidad de stock del producto -->
-
-                    <td>
-                <img src="<?= htmlspecialchars($producto['imagen_url']) ?>" 
-                 alt="Imagen del producto" 
-                 class="img-thumbnail" 
-                 style="width: 80px; height: 80px;">
-                <!-- Muestra la imagen del producto con un tamaño definido de 80x80 px.
-                 Se usa htmlspecialchars() para evitar inyección de código en la URL de la imagen -->
-                    </td>
-
-                    <td><?= htmlspecialchars($producto['categoria']) ?></td>  
-                    <!-- Muestra la categoría del producto -->
-
-                   <td>
-                        <a href="update.php?id=<?= urlencode($producto['id_producto']) ?>" class="btn btn-warning btn-sm">Editar</a>
-                         <!-- Enlace para editar el producto, pasando el ID del producto por la URL.
-                 Se usa urlencode() para asegurar que el valor sea seguro en la URL -->
-                    </td>
-
-                    <td>
-                        <a href="delete_productos.php?id=<?= urlencode($producto['id_producto']) ?>" 
-                         class="btn btn-danger btn-sm" 
-                        onclick="return confirm('¿Estás seguro de eliminar este producto?');">
-                        Eliminar
-                    </a>
-                     <!-- Enlace para eliminar el producto, pasando el ID por la URL con urlencode().
-                 Se usa un confirm() en JavaScript para pedir confirmación antes de eliminar -->
-                    </td>
-                </tr>
-<?php endforeach; ?> 
-<!-- Fin del bucle foreach -->
-                </tbody>
-            </table>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-
 </html>

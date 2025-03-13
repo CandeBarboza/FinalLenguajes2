@@ -15,7 +15,7 @@ class Proveedores
     // Obtener todos los proveedores
     public function obtenerTodosLosProveedores()
     {
-        $sql = "SELECT id, nombre, descripcion FROM Proveedores"; // Consulta SQL para obtener todos los proveedores.
+        $sql = "SELECT * FROM Proveedores"; // Consulta SQL para obtener todos los proveedores.
         $result = $this->con->query($sql);
 
         if (!$result) { // Verifica si hubo un error en la consulta.
