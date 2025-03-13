@@ -15,7 +15,7 @@ class Proveedores
     // Obtener todos los proveedores
     public function obtenerTodosLosProveedores()
     {
-        $sql = "SELECT id, nombre_proveedores, razon_social FROM Proveedores"; // Consulta SQL para obtener todos los proveedores.
+        $sql = "SELECT id, nombre, descripcion FROM Proveedores"; // Consulta SQL para obtener todos los proveedores.
         $result = $this->con->query($sql);
 
         if (!$result) { // Verifica si hubo un error en la consulta.
@@ -26,16 +26,16 @@ class Proveedores
     }
 
     // Crear un nuevo proveedor
-    public function crearProveedor($nombre_proveedores, $razon_social)
+    public function crearProveedor($nombre, $descripcion)
     {
-        $sql = "INSERT INTO Proveedores (nombre_proveedores, razon_social) VALUES (?, ?)";
+        $sql = "INSERT INTO Proveedores (nombre, descripcion) VALUES (?, ?)";
         $stmt = $this->con->prepare($sql);
 
         if (!$stmt) {
             throw new Exception("Error en la preparación de la consulta: " . $this->con->error);
         }
 
-        $stmt->bind_param("ss", $nombre_proveedores, $razon_social);   // Asigna los valores a los parámetros de la consulta.
+        $stmt->bind_param("ss", $nombre, $descripcion);   // Asigna los valores a los parámetros de la consulta.
         $resultado = $stmt->execute();
         $stmt->close();
 
@@ -69,16 +69,16 @@ class Proveedores
     }
 
     // Actualizar un proveedor
-    public function actualizarProveedor($id, $nombre_proveedores, $razon_social)
+    public function actualizarProveedor($id, $nombre, $descripcion)
     {
-        $sql = "UPDATE Proveedores SET nombre_proveedores = ?, razon_social = ? WHERE id = ?";
+        $sql = "UPDATE Proveedores SET nombre = ?, descripcion = ? WHERE id = ?";
         $stmt = $this->con->prepare($sql);
 
         if (!$stmt) {
             throw new Exception("Error en la preparación de la consulta: " . $this->con->error);
         }
 
-        $stmt->bind_param("ssi", $nombre_proveedores, $razon_social, $id);
+        $stmt->bind_param("ssi", $nombre, $descripcion, $id);
         $resultado = $stmt->execute();
         $stmt->close();
 
